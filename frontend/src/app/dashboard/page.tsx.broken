@@ -1,0 +1,548 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+
+interface User {
+  id: number;
+  email: string;
+  username: string;
+}
+
+interface Asset {
+  id: number;
+  asset_type: string;
+  name: string;
+  amount: number;
+  currency: string;
+  purchase_date: string;
+  notes: string;
+}
+
+export default function DashboardPage() {
+  const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+  const [assets, setAssets] = useState<Asset[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [totalAmount, setTotalAmount] = useState(0);
+  
+  // 資産追加モーダル用の状態
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [assetType, setAssetType] = useState('株式');
+  const [assetName, setAssetName] = useState('');
+  const [amount, setAmount] = useState('');
+  const [purchaseDate, setPurchaseDate] = useState('');
+  const [notes, setNotes] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    
+    if (!token) {
+      router.push('/login');
+      return;
+    }
+
+    // ユーザー情報を取得
+    fetchUserData(token);
+    // 資産情報を取得
+    fetchAssets(token);
+  }, [router]);
+
+  const fetchUserData = async (token: string) => {
+    try {
+      const response = await fetch('http://localhost:8000/api/auth/me', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('認証エラー');
+      }
+
+      const userData = await response.json();
+      setUser(userData);
+    } catch (error) {
+      console.error('ユーザー情報取得エラー:', error);
+      localStorage.removeItem('access_token');
+      router.push('/login');
+    }
+  };
+
+  const fetchAssets = async (token: string) => {
+    try {
+      const response = await fetch('http://localhost:8000/api/assets', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('資産情報取得エラー');
+      }
+
+      const assetsData = await response.json();
+      setAssets(assetsData);
+      
+      // 合計金額を計算
+      const total = assetsData.reduce((sum: number, asset: Asset) => sum + asset.amount, 0);
+      setTotalAmount(total);
+    } catch (error) {
+      console.error('資産情報取得エラー:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('token_type');
+    router.push('/login');
+  };
+
+  const handleAddAsset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      router.push('/login');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8000/api/assets', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          asset_type: assetType,
+          name: assetName,
+          amount: parseFloat(amount),
+          currency: 'JPY',
+          purchase_date: purchaseDate || null,
+          notes: notes || '',
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || '資産の追加に失敗しました');
+      }
+
+      // 資産リストを再取得
+      await fetchAssets(token);
+      
+      // フォームをリセット
+      setAssetType('株式');
+      setAssetName('');
+      setAmount('');
+      setPurchaseDate('');
+      setNotes('');
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error('資産追加エラー:', error);
+      setSubmitError(error instanceof Error ? error.message : '資産の追加に失敗しました');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleEditAsset = (asset: Asset) => {
+    setEditingAssetId(asset.id);
+    setAssetType(asset.asset_type);
+    setAssetName(asset.name);
+    setAmount(asset.amount.toString());
+    setPurchaseDate(asset.purchase_date || '');
+    setNotes(asset.notes || '');
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdateAsset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      router.push('/login');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8000/api/assets/${editingAssetId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          asset_type: assetType,
+          name: assetName,
+          amount: parseFloat(amount),
+          currency: 'JPY',
+          purchase_date: purchaseDate || null,
+          notes: notes || '',
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || '資産の更新に失敗しました');
+      }
+
+      // 資産リストを再取得
+      await fetchAssets(token);
+      
+      // フォームをリセット
+      setAssetType('株式');
+      setAssetName('');
+      setAmount('');
+      setPurchaseDate('');
+      setNotes('');
+      setEditingAssetId(null);
+      setIsEditModalOpen(false);
+    } catch (error) {
+      console.error('資産更新エラー:', error);
+      setSubmitError(error instanceof Error ? error.message : '資産の更新に失敗しました');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteAsset = async (assetId: number) => {
+    if (!confirm('この資産を削除しますか？')) return;
+
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      router.push('/login');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8000/api/assets/${assetId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('資産の削除に失敗しました');
+      }
+
+      // 資産リストを再取得
+      await fetchAssets(token);
+    } catch (error) {
+      console.error('資産削除エラー:', error);
+      alert('資産の削除に失敗しました');
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-yellow-50">
+        <div className="text-xl text-gray-600">読み込み中...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-yellow-50 min-h-screen">
+      {/* ヘッダー */}
+      <header className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+          <h1 className="text-3xl font-bold text-yellow-600">Wealth Supporter</h1>
+          <div className="flex items-center space-x-4">
+            <span className="text-gray-700">ようこそ、{user?.username}さん</span>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors"
+            >
+              ログアウト
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* ナビゲーション */}
+      <nav className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex space-x-8 py-4">
+            <Link
+              href="/dashboard"
+              className="text-yellow-600 border-b-2 border-yellow-600 px-3 py-2 font-semibold"
+            >
+              ダッシュボード
+            </Link>
+            <Link
+              href="/chat"
+              className="text-gray-600 hover:text-gray-900 px-3 py-2 font-semibold"
+            >
+              AIチャット
+            </Link>
+            <Link
+              href="/profile"
+              className="text-gray-600 hover:text-gray-900 px-3 py-2 font-semibold"
+            >
+              プロフィール
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* メインコンテンツ */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* サマリーカード */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">資産サマリー</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-yellow-50 rounded-lg p-4">
+              <p className="text-gray-600 text-sm">総資産額</p>
+              <p className="text-3xl font-bold text-yellow-600">
+                ¥{totalAmount.toLocaleString()}
+              </p>
+            </div>
+            <div className="bg-blue-50 rounded-lg p-4">
+              <p className="text-gray-600 text-sm">資産数</p>
+              <p className="text-3xl font-bold text-blue-600">{assets.length}</p>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4">
+              <p className="text-gray-600 text-sm">通貨</p>
+              <p className="text-3xl font-bold text-green-600">JPY</p>
+            </div>
+          </div>
+        </div>
+
+        {/* 資産一覧 */}
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold text-gray-900">保有資産</h2>
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-bold rounded-lg transition-colors"
+            >
+              資産を追加
+            </button>
+          </div>
+
+          {assets.length === 0 ? (
+            <div className="text-center py-12 text-gray-500">
+              <p className="text-xl mb-2">資産が登録されていません</p>
+              <p className="text-sm">「資産を追加」ボタンから登録してください</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      種類
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      名称
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      金額
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      購入日
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      操作
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {assets.map((asset) => (
+                    <tr key={asset.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {asset.asset_type}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {asset.name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        ¥{asset.amount.toLocaleString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {asset.purchase_date}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        {asset.notes || '-'}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <div className="flex space-x-3">
+                          <button
+                            onClick={() => handleEditAsset(asset)}
+                            className="text-yellow-600 hover:text-yellow-800 font-medium"
+                          >
+                            編集
+                          </button>
+                          <button
+                            onClick={() => handleDeleteAsset(asset.id)}
+                            className="text-red-600 hover:text-red-800 font-medium"
+                          >
+                            削除
+                          </button>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+          資産追加モーダル */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-bold text-gray-900">資産を追加</h3>
+                <button
+                  onClick={() => {
+                    setIsModalOpen(false);
+                    setSubmitError('');
+                  }}
+                  className="text-gray-400 hover:text-gray-600 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+
+              {submitError && (
+                <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                  {submitError}
+                </div>
+              )}
+
+              <form onSubmit={handleAddAsset} className="space-y-4">
+                <div>
+                  <label htmlFor="asset-type" className="block text-sm font-medium text-gray-700 mb-1">
+                    資産種類 <span className="text-red-600">*</span>
+                  </label>
+                  <select
+                    id="asset-type"
+                    value={assetType}
+                    onChange={(e) => setAssetType(e.target.value)}
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  >
+                    <option value="株式">株式</option>
+                    <option value="投資信託">投資信託</option>
+                    <option value="債券">債券</option>
+                    <option value="預金">預金</option>
+                    <option value="不動産">不動産</option>
+                    <option value="仮想通貨">仮想通貨</option>
+                    <option value="その他">その他</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="asset-name" className="block text-sm font-medium text-gray-700 mb-1">
+                    名称 <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="asset-name"
+                    value={assetName}
+                    onChange={(e) => setAssetName(e.target.value)}
+                    required
+                    placeholder="例: トヨタ自動車"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">
+                    金額 (円) <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    id="amount"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    required
+                    min="0"
+                    step="0.01"
+                    placeholder="例: 500000"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="purchase-date" className="block text-sm font-medium text-gray-700 mb-1">
+                    購入日
+                  </label>
+                  <input
+                    type="date"
+                    id="purchase-date"
+                    value={purchaseDate}
+                    onChange={(e) => setPurchaseDate(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-1">
+                    備考
+                  </label>
+                  <textarea
+                    id="notes"
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    rows={3}
+                    placeholder="メモや備考を入力"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                  />
+                </div>
+
+                <div className="flex space-x-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsModalOpen(false);
+                      setSubmitError('');
+                    }}
+                    className="flex-1 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-lg transition-colors"
+                  >
+                    キャンセル
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="flex-1 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-bold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? '追加中...' : '追加'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/*               {asset.notes || '-'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* フッター */}
+      <footer className="bg-white border-t border-gray-300 py-4 mt-12 text-center text-sm text-gray-600">
+        <nav className="space-x-4">
+          <a href="#" className="text-orange-700 hover:underline">利用規約</a>
+          <a href="#" className="text-orange-700 hover:underline">プライバシーポリシー</a>
+          <a href="#" className="text-orange-700 hover:underline">ヘルプ・FAQ</a>
+        </nav>
+      </footer>
+    </div>
+  );
+}

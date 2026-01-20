@@ -1,0 +1,280 @@
+<!-- Generated for file_path: dashboard.html -->
+<!-- Corresponding screen_name: ライフプランダッシュボード画面 -->
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ライフプランダッシュボード - Wealth Supporter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <style>
+    /* カスタムスタイル */
+    /* ステータス別バー色 */
+    .status-not_started {
+      background-color: #cccccc; /* 灰色 - 未着手 */
+    }
+    .status-in_progress {
+      background-color: #ffc107; /* プライマリーカラー - 進行中 */
+    }
+    .status-completed {
+      background-color: #388e3c; /* 成功色 - 完了 */
+    }
+
+    /* カードのシャドウの微調整 */
+    .card-shadow {
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+    }
+
+    /* カテゴリカードホバー */
+    .category-card:hover {
+      background-color: #fff8e1; /* 薄い黄色 */
+      cursor: pointer;
+    }
+
+    /* AI提案カード */
+    .ai-proposal-card {
+      background-color: #ff6f00;
+      color: white;
+    }
+
+    /* グラフ領域のカード */
+    .chart-card {
+      background-color: #fff;
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.12);
+    }
+
+    /* アクセシビリティ: focus時の色付け */
+    a:focus, button:focus {
+      outline: 3px solid #ffc107;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="bg-yellow-50 text-gray-900 font-sans min-h-screen flex flex-col">
+
+  <!-- ヘッダー -->
+  <header role="banner" class="flex items-center justify-between bg-white shadow-sm px-6 h-16 shrink-0">
+    <h1 class="text-yellow-600 text-xl font-bold select-none">Wealth Supporter</h1>
+    <nav aria-label="ユーザーメニュー">
+      <ul class="flex items-center space-x-4 text-gray-700">
+        <li>
+          <a href="./user_profile.html" class="hover:text-yellow-700 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300 rounded px-2 py-1">プロフィール</a>
+        </li>
+        <li>
+          <a href="./user_profile.html" class="hover:text-yellow-700 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300 rounded px-2 py-1">設定</a>
+        </li>
+        <li>
+          <a href="./system_notifications.html" class="hover:text-yellow-700 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300 rounded px-2 py-1">通知</a>
+        </li>
+        <li>
+          <a href="./logout_confirm.html" class="text-orange-700 font-semibold hover:underline focus:underline focus:outline-yellow-300 px-2 py-1">ログアウト</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="flex flex-1 min-h-0 overflow-hidden">
+    <!-- サイドナビゲーション -->
+    <nav aria-label="サイドナビゲーション" class="bg-white w-64 border-r border-gray-200 p-6 hidden md:flex flex-col text-gray-700 shrink-0">
+      <ul class="space-y-3 flex flex-col">
+        <li>
+          <a href="./dashboard.html" aria-current="page" class="block px-4 py-2 rounded bg-yellow-100 text-yellow-700 font-semibold focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300">ダッシュボード</a>
+        </li>
+        <li>
+          <a href="./chat_full.html" class="block px-4 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300">AIチャット</a>
+        </li>
+        <li>
+          <a href="./conversation_history.html" class="block px-4 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300">会話履歴</a>
+        </li>
+        <li>
+          <a href="./favorite_actions.html" class="block px-4 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300">お気に入りアクション</a>
+        </li>
+        <li>
+          <a href="./plan_history.html" class="block px-4 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300">プラン履歴・バージョン管理</a>
+        </li>
+        <li>
+          <a href="./reminder_setting.html" class="block px-4 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300">リマインダー設定</a>
+        </li>
+        <li>
+          <a href="./help_faq.html" class="block px-4 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300">ヘルプ・FAQ</a>
+        </li>
+        <li>
+          <a href="./accessibility_env.html" class="block px-4 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300">アクセシビリティ設定</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- メインコンテンツ -->
+    <main role="main" class="flex-1 overflow-auto p-8 max-w-full" tabindex="-1" aria-label="ライフプランダッシュボード">
+
+      <h2 class="text-3xl font-bold text-yellow-700 mb-8 select-none">あなたのライフプランダッシュボード</h2>
+
+      <!-- 7カテゴリカード -->
+      <section aria-label="7つの主要論点" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mb-10" role="list">
+
+        <!-- サンプルカテゴリカード要素を7つ用意 -->
+        <!-- 各カードはクリックで論点詳細編集画面へ遷移 -->
+        <article role="listitem" tabindex="0" class="category-card card-shadow bg-white rounded-lg p-5 flex flex-col justify-between focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300" 
+          onclick="location.href='./category_detail.html'" onkeydown="if(event.key==='Enter'){location.href='./category_detail.html'}" aria-label="収入の詳細と進捗">
+          <header class="flex justify-between items-center mb-3">
+            <h3 class="text-xl font-semibold text-yellow-700">収入</h3>
+            <!-- 進捗ステータス -->
+            <div aria-label="進捗ステータス: 進行中" class="w-3 h-3 rounded-full status-in_progress" title="進行中"></div>
+          </header>
+          <p class="text-gray-600 mb-3">年収情報や将来的な収入変動を入力・管理します。</p>
+          <footer class="text-sm text-gray-500">
+            最終更新日: 2024年6月10日
+          </footer>
+          <div aria-hidden="true" class="mt-3 h-1 rounded-full status-in_progress"></div>
+        </article>
+
+        <article role="listitem" tabindex="0" class="category-card card-shadow bg-white rounded-lg p-5 flex flex-col justify-between focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300"
+          onclick="location.href='./category_detail.html'" onkeydown="if(event.key==='Enter'){location.href='./category_detail.html'}" aria-label="支出の詳細と進捗">
+          <header class="flex justify-between items-center mb-3">
+            <h3 class="text-xl font-semibold text-yellow-700">支出</h3>
+            <div aria-label="進捗ステータス: 未着手" class="w-3 h-3 rounded-full status-not_started" title="未着手"></div>
+          </header>
+          <p class="text-gray-600 mb-3">生活費・固定費など支出の現状と将来予測を管理します。</p>
+          <footer class="text-sm text-gray-500">
+            最終更新日: 2024年5月20日
+          </footer>
+          <div aria-hidden="true" class="mt-3 h-1 rounded-full status-not_started"></div>
+        </article>
+
+        <article role="listitem" tabindex="0" class="category-card card-shadow bg-white rounded-lg p-5 flex flex-col justify-between focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300"
+          onclick="location.href='./category_detail.html'" onkeydown="if(event.key==='Enter'){location.href='./category_detail.html'}" aria-label="資産・負債の詳細と進捗">
+          <header class="flex justify-between items-center mb-3">
+            <h3 class="text-xl font-semibold text-yellow-700">資産・負債</h3>
+            <div aria-label="進捗ステータス: 完了" class="w-3 h-3 rounded-full status-completed" title="完了"></div>
+          </header>
+          <p class="text-gray-600 mb-3">預貯金、投資、ローン等の資産・負債を総合的に把握。</p>
+          <footer class="text-sm text-gray-500">
+            最終更新日: 2024年6月5日
+          </footer>
+          <div aria-hidden="true" class="mt-3 h-1 rounded-full status-completed"></div>
+        </article>
+
+        <article role="listitem" tabindex="0" class="category-card card-shadow bg-white rounded-lg p-5 flex flex-col justify-between focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300"
+          onclick="location.href='./category_detail.html'" onkeydown="if(event.key==='Enter'){location.href='./category_detail.html'}" aria-label="家の詳細と進捗">
+          <header class="flex justify-between items-center mb-3">
+            <h3 class="text-xl font-semibold text-yellow-700">家</h3>
+            <div aria-label="進捗ステータス: 進行中" class="w-3 h-3 rounded-full status-in_progress" title="進行中"></div>
+          </header>
+          <p class="text-gray-600 mb-3">住宅購入やリフォーム計画、ローン返済プラン。</p>
+          <footer class="text-sm text-gray-500">
+            最終更新日: 2024年6月8日
+          </footer>
+          <div aria-hidden="true" class="mt-3 h-1 rounded-full status-in_progress"></div>
+        </article>
+
+        <article role="listitem" tabindex="0" class="category-card card-shadow bg-white rounded-lg p-5 flex flex-col justify-between focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300"
+          onclick="location.href='./category_detail.html'" onkeydown="if(event.key==='Enter'){location.href='./category_detail.html'}" aria-label="子ども教育の詳細と進捗">
+          <header class="flex justify-between items-center mb-3">
+            <h3 class="text-xl font-semibold text-yellow-700">子ども教育</h3>
+            <div aria-label="進捗ステータス: 未着手" class="w-3 h-3 rounded-full status-not_started" title="未着手"></div>
+          </header>
+          <p class="text-gray-600 mb-3">教育費用の計画、公立・私立の選択肢比較。</p>
+          <footer class="text-sm text-gray-500">
+            最終更新日: 2024年4月15日
+          </footer>
+          <div aria-hidden="true" class="mt-3 h-1 rounded-full status-not_started"></div>
+        </article>
+
+        <article role="listitem" tabindex="0" class="category-card card-shadow bg-white rounded-lg p-5 flex flex-col justify-between focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300"
+          onclick="location.href='./category_detail.html'" onkeydown="if(event.key==='Enter'){location.href='./category_detail.html'}" aria-label="キャリア設計の詳細と進捗">
+          <header class="flex justify-between items-center mb-3">
+            <h3 class="text-xl font-semibold text-yellow-700">キャリア設計</h3>
+            <div aria-label="進捗ステータス: 完了" class="w-3 h-3 rounded-full status-completed" title="完了"></div>
+          </header>
+          <p class="text-gray-600 mb-3">転職、副業、起業など複数選択肢の比較検討。</p>
+          <footer class="text-sm text-gray-500">
+            最終更新日: 2024年6月9日
+          </footer>
+          <div aria-hidden="true" class="mt-3 h-1 rounded-full status-completed"></div>
+        </article>
+
+        <article role="listitem" tabindex="0" class="category-card card-shadow bg-white rounded-lg p-5 flex flex-col justify-between focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300"
+          onclick="location.href='./category_detail.html'" onkeydown="if(event.key==='Enter'){location.href='./category_detail.html'}" aria-label="リスクの詳細と進捗">
+          <header class="flex justify-between items-center mb-3">
+            <h3 class="text-xl font-semibold text-yellow-700">リスク</h3>
+            <div aria-label="進捗ステータス: 進行中" class="w-3 h-3 rounded-full status-in_progress" title="進行中"></div>
+          </header>
+          <p class="text-gray-600 mb-3">生命保険、医療保険、老後資金のリスク管理。</p>
+          <footer class="text-sm text-gray-500">
+            最終更新日: 2024年6月7日
+          </footer>
+          <div aria-hidden="true" class="mt-3 h-1 rounded-full status-in_progress"></div>
+        </article>
+      </section>
+
+      <!-- キャッシュフロー簡易グラフ表示領域 -->
+      <section aria-label="キャッシュフローグラフ" class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+        <!-- 短期 -->
+        <div class="chart-card p-6">
+          <h3 class="text-xl font-semibold text-yellow-700 mb-4 select-none">キャッシュフロー（短期）</h3>
+          <svg role="img" aria-label="短期キャッシュフローグラフ" width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" class="max-w-full">
+            <rect width="600" height="200" fill="#fff8e1"/>
+            <path d="M50 180 L100 140 L150 120 L200 130 L250 160 L300 140 L350 120 L400 110 L450 90 L500 80 L550 60" stroke="#ff6f00" stroke-width="3" fill="none" />
+            <text x="10" y="20" fill="#333333" font-size="14" font-family="Noto Sans JP, Roboto, sans-serif">収入</text>
+            <text x="10" y="40" fill="#ff6f00" font-size="14" font-family="Noto Sans JP, Roboto, sans-serif">支出とのバランス</text>
+          </svg>
+          <p class="mt-2 text-gray-600 text-sm">収入と支出のバランスを直感的に確認できます。</p>
+        </div>
+
+        <!-- 長期 -->
+        <div class="chart-card p-6">
+          <h3 class="text-xl font-semibold text-yellow-700 mb-4 select-none">キャッシュフロー（長期）</h3>
+          <svg role="img" aria-label="長期キャッシュフローグラフ" width="100%" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" class="max-w-full">
+            <rect width="600" height="200" fill="#fff8e1"/>
+            <path d="M50 170 L100 150 L150 160 L200 140 L250 120 L300 110 L350 90 L400 80 L450 70 L500 60 L550 50" stroke="#ff6f00" stroke-width="3" fill="none" />
+            <text x="10" y="20" fill="#333333" font-size="14" font-family="Noto Sans JP, Roboto, sans-serif">資産推移</text>
+            <text x="10" y="40" fill="#ff6f00" font-size="14" font-family="Noto Sans JP, Roboto, sans-serif">長期見通し</text>
+          </svg>
+          <p class="mt-2 text-gray-600 text-sm">長期的な資産の推移をわかりやすく表示します。</p>
+        </div>
+      </section>
+
+      <!-- AIからの改善ポイントと次のアクション提案 -->
+      <section aria-label="AIによる改善ポイントと次のアクション提案" class="ai-proposal-card rounded-lg p-6 max-w-4xl mx-auto">
+        <h3 class="text-2xl font-bold mb-4">AIからの改善ポイント・次のアクション提案</h3>
+        <ul class="space-y-4 list-disc list-inside text-white">
+          <li>
+            <strong>収入増加に関する提案:</strong> 副業の開始やキャリアアップによる収入改善を検討しましょう。
+          </li>
+          <li>
+            <strong>支出管理:</strong> 月々の固定費を見直し、節約可能な部分を特定しましょう。
+          </li>
+          <li>
+            <strong>資産運用:</strong> 預貯金偏重からの脱却として、リスク分散を考えた投資プランを検討すると良いでしょう。
+          </li>
+          <li>
+            <strong>次のアクション:</strong> 各カテゴリカードから詳細編集を行い、プランをアップデートしてください。
+          </li>
+        </ul>
+        <div class="mt-6 text-right">
+          <a href="./favorite_actions.html" class="inline-block bg-white text-orange-800 font-semibold px-5 py-2 rounded hover:bg-yellow-200 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300 transition">
+            お気に入りアクション管理へ
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- フッター -->
+  <footer class="bg-white border-t border-gray-300 py-4 text-center text-sm text-gray-600 shrink-0">
+    <nav aria-label="フッターナビゲーション" class="space-x-4 inline-flex">
+      <a href="./terms_privacy.html#terms" class="text-orange-700 hover:underline focus:underline focus:outline-yellow-300">利用規約</a>
+      <a href="./terms_privacy.html#privacy" class="text-orange-700 hover:underline focus:underline focus:outline-yellow-300">プライバシーポリシー</a>
+      <a href="./help_faq.html" class="text-orange-700 hover:underline focus:underline focus:outline-yellow-300">ヘルプ・FAQ</a>
+    </nav>
+  </footer>
+
+  <script>
+    // キーボード操作でEnter押下時にリンク遷移できるよう補助
+    // 既にonclickとonkeydownで対応済みなので特に追加スクリプトは不要
+  </script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+# Docker Compose 設定
+# 初心者向け解説：複数のコンテナ（MySQL、バックエンド、フロントエンド）をまとめて起動
+
+version: '3.8'
+
+services:
+  # === MySQL データベース ===
+  db:
+    image: mysql:8.0
+    # なぜ mysql:8.0：安定版、広く使われている
+    
+    container_name: wealthsupporter_mysql
+    
+    restart: always
+    # なぜ always：クラッシュしても自動再起動
+    
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      # ⚠️ 本番環境では必ず変更！
+      
+      MYSQL_DATABASE: wealthsupporter
+      # 起動時にこのデータベースを自動作成
+      
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppassword
+      # アプリ用のユーザー（rootは使わない方が安全）
+      
+    ports:
+      - "3306:3306"
+      # ホストの3306ポート → コンテナの3306ポート
+      # なぜ必要：ローカルから mysql コマンドで接続できる
+      
+    volumes:
+      - mysql_data:/var/lib/mysql
+      # なぜボリューム：データを永続化（コンテナ削除してもデータ残る）
+      
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      # なぜ /docker-entrypoint-initdb.d：起動時に自動実行される
+      
+    networks:
+      - wealthsupporter_network
+    
+    healthcheck:
+      # MySQLが起動完了したか確認
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # === FastAPI バックエンド ===
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    
+    container_name: wealthsupporter_backend
+    
+    restart: always
+    
+    environment:
+      DATABASE_URL: mysql+pymysql://appuser:apppassword@db:3306/wealthsupporter
+      # 注目：@db → Docker内部のホスト名（サービス名）
+      
+      SECRET_KEY: your-secret-key-change-this
+      DEBUG: "True"
+      GEMINI_API_KEY: AIzaSyBeVMSpH5k35PaePJo0WUT6QbDpBQXkAvc
+      # Gemini API キー
+      
+    ports:
+      - "8000:8000"
+      # FastAPI を localhost:8000 で公開
+      
+    depends_on:
+      db:
+        condition: service_healthy
+      # なぜ depends_on：MySQLが起動完了してから起動
+      
+    volumes:
+      - ./backend:/app
+      # なぜ：コード変更を即座に反映（開発時便利）
+      
+    networks:
+      - wealthsupporter_network
+    
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    # --reload：コード変更で自動再起動（開発モード）
+
+  # === Next.js フロントエンド ===
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    
+    container_name: wealthsupporter_frontend
+    
+    restart: always
+    
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api
+      # フロントエンドからバックエンドへのアクセス先
+      
+    ports:
+      - "3000:3000"
+      # Next.js を localhost:3000 で公開
+      
+    depends_on:
+      - backend
+      # バックエンドの後に起動
+      
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      # なぜ /app/node_modules：ホストのnode_modulesを使わない
+      
+    networks:
+      - wealthsupporter_network
+    
+    command: npm run dev
+
+# === ボリューム定義 ===
+volumes:
+  mysql_data:
+    # MySQLデータの永続化
+
+# === ネットワーク定義 ===
+networks:
+  wealthsupporter_network:
+    driver: bridge
+    # なぜ bridge：コンテナ間で通信できる

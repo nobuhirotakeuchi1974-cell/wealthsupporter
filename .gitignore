@@ -1,0 +1,89 @@
+# WealthSupporter - .gitignore
+# 初心者向け解説：Gitで管理しないファイルを指定
+
+# ===== 環境変数（機密情報） =====
+# ⚠️ 最重要：パスワードやAPIキーは絶対にコミットしない！
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env.local
+
+# ===== Python関連 =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 仮想環境
+venv/
+ENV/
+env/
+.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# ===== Node.js関連 =====
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Next.js
+.next/
+out/
+.vercel
+
+# ===== データベース =====
+*.db
+*.sqlite
+*.sqlite3
+mysql_data/
+
+# ===== IDE関連 =====
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ===== Docker関連 =====
+docker-compose.override.yml
+
+# ===== ログファイル =====
+*.log
+logs/
+
+# ===== テスト関連 =====
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ===== OS関連 =====
+.DS_Store
+Thumbs.db
+
+# ===== 一時ファイル =====
+*.tmp
+*.bak
+*.swp

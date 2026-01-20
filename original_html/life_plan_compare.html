@@ -1,0 +1,276 @@
+<!-- Generated for file_path: life_plan_compare.html -->
+<!-- Corresponding screen_name: ライフプラン比較画面 -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ライフプラン比較画面 - Wealth Supporter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <style>
+    /* Scrollbar styling for scenario list */
+    .scenario-tabs::-webkit-scrollbar {
+      height: 6px;
+    }
+    .scenario-tabs::-webkit-scrollbar-track {
+      background: #fff9e5;
+    }
+    .scenario-tabs::-webkit-scrollbar-thumb {
+      background-color: #ffb300;
+      border-radius: 10px;
+    }
+    /* Highlight selected tab */
+    .tab-selected {
+      @apply bg-yellow-400 text-gray-900 font-semibold shadow-inner;
+    }
+    /* Graph container: responsive with fixed height */
+    .graph-container {
+      height: 240px;
+      background-color: #fff9e5; /* 薄い黄色ベース */
+      border-radius: 0.5rem;
+    }
+  </style>
+</head>
+<body class="bg-yellow-50 text-gray-900 font-sans min-h-screen flex flex-col">
+  <!-- Header -->
+  <header role="banner" class="flex items-center justify-between bg-white shadow-sm px-6 h-16">
+    <h1 class="text-yellow-600 text-xl font-bold select-none">Wealth Supporter</h1>
+    <nav aria-label="ユーザーメニュー">
+      <ul class="flex items-center space-x-4">
+        <li><a href="./user_profile.html" class="text-gray-700 hover:text-yellow-700 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300 rounded">プロフィール</a></li>
+        <li><a href="./user_profile.html" class="text-gray-700 hover:text-yellow-700 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300 rounded">設定</a></li>
+        <li><a href="./system_notifications.html" class="text-gray-700 hover:text-yellow-700 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300 rounded">通知</a></li>
+        <li><a href="./logout_confirm.html" class="text-orange-700 font-semibold hover:underline focus:underline focus:outline-yellow-300">ログアウト</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="flex flex-1 min-h-0">
+    <!-- Side Navigation -->
+    <nav aria-label="サイドナビゲーション" class="bg-white w-64 border-r border-gray-200 p-4 hidden md:block">
+      <ul class="space-y-3 text-gray-700">
+        <li><a href="./dashboard.html" class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300">ダッシュボード</a></li>
+        <li><a href="./chat_full.html" class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300">AIチャット</a></li>
+        <li><a href="./conversation_history.html" class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300">会話履歴</a></li>
+        <li><a href="./favorite_actions.html" class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300">お気に入りアクション</a></li>
+        <li><a href="./plan_history.html" class="block px-3 py-2 rounded font-semibold bg-yellow-100 focus:outline-yellow-300" aria-current="page">プラン履歴・バージョン管理</a></li>
+        <li><a href="./reminder_setting.html" class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300">リマインダー設定</a></li>
+        <li><a href="./help_faq.html" class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300">ヘルプ・FAQ</a></li>
+        <li><a href="./accessibility_env.html" class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300">アクセシビリティ設定</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main role="main" class="flex-1 overflow-auto p-6 max-w-full" tabindex="-1">
+      <section aria-label="ライフプラン比較画面" class="space-y-8 max-w-7xl mx-auto">
+        <header>
+          <h2 class="text-3xl font-bold text-yellow-700 mb-2">ライフプラン比較</h2>
+          <p class="text-gray-700">複数の将来シナリオによるキャッシュフローや資産推移を比較検討し、最適なプランを選択しましょう。</p>
+        </header>
+
+        <!-- シナリオ切替・タブ -->
+        <nav aria-label="シナリオ切替" class="scenario-tabs flex overflow-x-auto space-x-2 border-b border-yellow-300 pb-2 mb-6" role="tablist">
+          <button role="tab" aria-selected="true" aria-controls="scenario-1" id="tab-scenario-1" tabindex="0"
+            class="tab-selected px-4 py-2 rounded text-gray-900 whitespace-nowrap focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-300">
+            シナリオA: 安定重視
+          </button>
+          <button role="tab" aria-selected="false" aria-controls="scenario-2" id="tab-scenario-2" tabindex="-1"
+            class="px-4 py-2 rounded text-yellow-800 hover:bg-yellow-200 whitespace-nowrap focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-300">
+            シナリオB: 積極投資
+          </button>
+          <button role="tab" aria-selected="false" aria-controls="scenario-3" id="tab-scenario-3" tabindex="-1"
+            class="px-4 py-2 rounded text-yellow-800 hover:bg-yellow-200 whitespace-nowrap focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-300">
+            シナリオC: 副業追加
+          </button>
+        </nav>
+
+        <!-- シナリオ概要と操作ボタン -->
+        <article id="scenario-1" role="tabpanel" tabindex="0" aria-labelledby="tab-scenario-1" class="space-y-4">
+          <div class="bg-white rounded-lg shadow p-6 border border-yellow-300">
+            <h3 class="text-xl font-semibold text-yellow-700 mb-2">シナリオA: 安定重視</h3>
+            <p class="text-gray-700 mb-4">
+              定職収入を中心に生活設計。リスクを抑えた資産運用と計画的な支出管理を重視したプラン。
+            </p>
+            <p class="text-sm text-gray-500 mb-4">ステータス: <span class="font-semibold text-green-600">アクティブ</span></p>
+            <div class="flex space-x-4">
+              <button type="button" 
+                class="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 rounded shadow focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400 focus:ring-offset-1 transition">
+                保存
+              </button>
+              <button type="button"
+                class="flex-1 border border-yellow-500 text-yellow-700 hover:bg-yellow-100 font-semibold py-2 rounded shadow focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400 focus:ring-offset-1 transition">
+                削除
+              </button>
+            </div>
+          </div>
+
+          <!-- キャッシュフローグラフ：短期 -->
+          <section aria-labelledby="cf-short-term-label" class="graph-container my-4 p-4 shadow-inner border border-yellow-200">
+            <h4 id="cf-short-term-label" class="text-lg font-semibold text-yellow-700 mb-2">キャッシュフロー（短期：1年）</h4>
+            <svg role="img" aria-label="キャッシュフロー短期グラフ" class="w-full h-48" viewBox="0 0 600 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="600" height="200" fill="#fff9e5" />
+              <!-- サンプル棒グラフ -->
+              <rect x="40" y="120" width="30" height="80" fill="#ff6f00" />
+              <rect x="90" y="90" width="30" height="110" fill="#ff6f00" />
+              <rect x="140" y="110" width="30" height="90" fill="#ff6f00" />
+              <rect x="190" y="70" width="30" height="130" fill="#ff6f00" />
+              <rect x="240" y="85" width="30" height="115" fill="#ff6f00" />
+              <rect x="290" y="60" width="30" height="140" fill="#ff6f00" />
+              <rect x="340" y="75" width="30" height="125" fill="#ff6f00" />
+              <rect x="390" y="95" width="30" height="105" fill="#ff6f00" />
+              <rect x="440" y="80" width="30" height="120" fill="#ff6f00" />
+              <rect x="490" y="55" width="30" height="145" fill="#ff6f00" />
+              <rect x="540" y="70" width="30" height="130" fill="#ff6f00" />
+            </svg>
+          </section>
+
+          <!-- キャッシュフローグラフ：長期 -->
+          <section aria-labelledby="cf-long-term-label" class="graph-container my-4 p-4 shadow-inner border border-yellow-200">
+            <h4 id="cf-long-term-label" class="text-lg font-semibold text-yellow-700 mb-2">キャッシュフロー（長期：10年）</h4>
+            <svg role="img" aria-label="キャッシュフロー長期グラフ" class="w-full h-48" viewBox="0 0 600 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="600" height="200" fill="#fff9e5" />
+              <!-- サンプル折れ線グラフ -->
+              <polyline fill="none" stroke="#ff6f00" stroke-width="3" points="
+                30,160 
+                70,140 
+                110,120 
+                150,130 
+                190,100 
+                230,90 
+                270,85 
+                310,80 
+                350,75 
+                390,70 
+                430,65 
+                470,60 
+                510,65 
+                550,60 
+                590,55" />
+              <!-- 軸 -->
+              <line x1="30" y1="160" x2="590" y2="160" stroke="#cccccc" stroke-width="1" />
+              <line x1="30" y1="40" x2="30" y2="160" stroke="#cccccc" stroke-width="1" />
+            </svg>
+          </section>
+
+          <!-- シナリオ比較用テーブル -->
+          <section aria-label="シナリオ比較サマリー" class="overflow-x-auto bg-white rounded-lg shadow p-6 border border-yellow-300">
+            <h4 class="text-lg font-semibold text-yellow-700 mb-4">他シナリオとの比較（要点）</h4>
+            <table class="w-full text-left table-auto border-collapse border border-gray-300">
+              <thead class="bg-yellow-100">
+                <tr>
+                  <th class="border border-gray-300 py-2 px-3">比較項目</th>
+                  <th class="border border-gray-300 py-2 px-3">シナリオA</th>
+                  <th class="border border-gray-300 py-2 px-3">シナリオB</th>
+                  <th class="border border-gray-300 py-2 px-3">シナリオC</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="odd:bg-yellow-50">
+                  <td class="border border-gray-300 py-2 px-3 font-medium">収入の安定度</td>
+                  <td class="border border-gray-300 py-2 px-3">高い</td>
+                  <td class="border border-gray-300 py-2 px-3">中程度</td>
+                  <td class="border border-gray-300 py-2 px-3">中程度</td>
+                </tr>
+                <tr class="odd:bg-yellow-50">
+                  <td class="border border-gray-300 py-2 px-3 font-medium">投資リスク</td>
+                  <td class="border border-gray-300 py-2 px-3">低い</td>
+                  <td class="border border-gray-300 py-2 px-3">高い</td>
+                  <td class="border border-gray-300 py-2 px-3">中程度</td>
+                </tr>
+                <tr class="odd:bg-yellow-50">
+                  <td class="border border-gray-300 py-2 px-3 font-medium">将来キャッシュフローの変動</td>
+                  <td class="border border-gray-300 py-2 px-3">安定</td>
+                  <td class="border border-gray-300 py-2 px-3">大きな変動あり</td>
+                  <td class="border border-gray-300 py-2 px-3">中程度の変動</td>
+                </tr>
+                <tr class="odd:bg-yellow-50">
+                  <td class="border border-gray-300 py-2 px-3 font-medium">ライフスタイルへの影響</td>
+                  <td class="border border-gray-300 py-2 px-3">制限なし</td>
+                  <td class="border border-gray-300 py-2 px-3">積極的な変化</td>
+                  <td class="border border-gray-300 py-2 px-3">副業あり</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- お気に入りアクション管理ボタン -->
+          <div class="mt-6 text-right">
+            <a href="./favorite_actions.html"
+              class="inline-block bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-5 rounded shadow focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400 focus:ring-offset-1 transition"
+              aria-label="お気に入りアクション管理へ移動">
+              <i class="fa-solid fa-star mr-2"></i>お気に入りアクション管理
+            </a>
+          </div>
+        </article>
+
+        <!-- シナリオB と シナリオC のパネル非表示（JavaScript切替で表示予定） -->
+        <article id="scenario-2" role="tabpanel" tabindex="-1" aria-labelledby="tab-scenario-2" class="hidden space-y-4">
+          <!-- 内容省略、同様の構造で表示切替可能 -->
+        </article>
+        <article id="scenario-3" role="tabpanel" tabindex="-1" aria-labelledby="tab-scenario-3" class="hidden space-y-4">
+          <!-- 内容省略、同様の構造で表示切替可能 -->
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-gray-300 py-4 text-center text-sm text-gray-600 mt-auto">
+    <nav aria-label="フッターナビゲーション" class="space-x-4">
+      <a href="./terms_privacy.html#terms" class="text-orange-700 hover:underline focus:underline focus:outline-yellow-300">利用規約</a>
+      <a href="./terms_privacy.html#privacy" class="text-orange-700 hover:underline focus:underline focus:outline-yellow-300">プライバシーポリシー</a>
+      <a href="./help_faq.html" class="text-orange-700 hover:underline focus:underline focus:outline-yellow-300">ヘルプ・FAQ</a>
+    </nav>
+  </footer>
+
+  <script>
+    // タブ切り替え機能（シンプル実装）
+    const tabs = document.querySelectorAll('[role="tab"]');
+    const tabPanels = document.querySelectorAll('[role="tabpanel"]');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => {
+          t.setAttribute('aria-selected', 'false');
+          t.setAttribute('tabindex', '-1');
+          t.classList.remove('tab-selected');
+          t.classList.remove('bg-yellow-400', 'text-gray-900', 'font-semibold', 'shadow-inner');
+          t.classList.add('text-yellow-800', 'hover:bg-yellow-200');
+        });
+        tabPanels.forEach(panel => panel.classList.add('hidden'));
+
+        tab.setAttribute('aria-selected', 'true');
+        tab.setAttribute('tabindex', '0');
+        tab.classList.add('tab-selected');
+        tab.classList.remove('text-yellow-800', 'hover:bg-yellow-200');
+
+        const panelId = tab.getAttribute('aria-controls');
+        const panel = document.getElementById(panelId);
+        if(panel){
+          panel.classList.remove('hidden');
+          panel.focus();
+        }
+      });
+    });
+
+    // キーボード操作サポート（左右矢印キーでタブ移動）
+    tabs.forEach(tab => {
+      tab.addEventListener('keydown', e => {
+        let index = Array.prototype.indexOf.call(tabs, tab);
+        if(e.key === 'ArrowRight'){
+          e.preventDefault();
+          let nextIndex = (index + 1) % tabs.length;
+          tabs[nextIndex].focus();
+          tabs[nextIndex].click();
+        } else if(e.key === 'ArrowLeft') {
+          e.preventDefault();
+          let prevIndex = (index - 1 + tabs.length) % tabs.length;
+          tabs[prevIndex].focus();
+          tabs[prevIndex].click();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

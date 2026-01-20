@@ -1,0 +1,204 @@
+<!-- Generated for file_path: user_profile.html -->
+<!-- Corresponding screen_name: ユーザープロフィール設定画面 -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ユーザープロフィール設定 - Wealth Supporter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <style>
+    /* フォーカス時のアウトライン */
+    .focus-outline-yellow:focus {
+      outline: 2px solid #FFC107;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="bg-yellow-50 text-gray-900 font-sans min-h-screen flex flex-col">
+  <header role="banner" class="flex items-center justify-between bg-white shadow-sm px-6 h-16">
+    <h1 class="text-yellow-600 text-xl font-bold select-none">Wealth Supporter</h1>
+    <nav aria-label="ユーザーメニュー">
+      <ul class="flex items-center space-x-4">
+        <li><a href="./user_profile.html" aria-current="page" class="text-yellow-700 font-semibold focus-outline-yellow rounded px-2 py-1" tabindex="0">プロフィール</a></li>
+        <li><a href="#" class="text-gray-700 hover:text-yellow-700 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300 rounded px-2 py-1">設定</a></li>
+        <li><a href="./system_notifications.html" class="text-gray-700 hover:text-yellow-700 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300 rounded px-2 py-1">通知</a></li>
+        <li><a href="./logout_confirm.html" class="text-orange-700 font-semibold hover:underline focus:underline focus:outline-yellow-300 px-2 py-1">ログアウト</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="flex flex-1 min-h-0">
+    <nav aria-label="サイドナビゲーション" class="bg-white w-64 border-r border-gray-200 p-4 hidden md:block">
+      <ul class="space-y-3 text-gray-700">
+        <li><a href="./dashboard.html" class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300" tabindex="0">ダッシュボード</a></li>
+        <li><a href="./chat_full.html" class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300">AIチャット</a></li>
+        <li><a href="./conversation_history.html" class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300">会話履歴</a></li>
+        <li><a href="./favorite_actions.html" class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300">お気に入りアクション</a></li>
+        <li><a href="./plan_history.html" class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300">プラン履歴・バージョン管理</a></li>
+        <li><a href="./reminder_setting.html" class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300">リマインダー設定</a></li>
+        <li><a href="./help_faq.html" class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300">ヘルプ・FAQ</a></li>
+        <li><a href="./accessibility_env.html" class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300">アクセシビリティ設定</a></li>
+      </ul>
+    </nav>
+
+    <main role="main" class="flex-1 overflow-auto p-6 max-w-full focus:outline-none" tabindex="-1">
+      <section aria-labelledby="profile-title" class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
+        <h2 id="profile-title" class="text-2xl font-semibold mb-8 text-gray-800">ユーザープロフィール設定</h2>
+
+        <form id="profile-form" action="#" method="post" class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6" novalidate>
+          <!-- 左側: 基本情報 -->
+          <fieldset class="space-y-4">
+            <legend class="text-lg font-semibold text-yellow-700 border-b border-yellow-300 pb-2 mb-4">基本情報</legend>
+
+            <div>
+              <label for="age" class="block text-gray-700 font-medium mb-1">年齢<span class="text-red-600" aria-hidden="true">*</span></label>
+              <input type="number" id="age" name="age" min="0" max="120" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                aria-describedby="age-desc" placeholder="例: 35" />
+              <p id="age-desc" class="text-sm text-gray-500 mt-1">20～50代社会人を想定した入力</p>
+            </div>
+
+            <div>
+              <label for="income" class="block text-gray-700 font-medium mb-1">年収（万円）<span class="text-red-600" aria-hidden="true">*</span></label>
+              <input type="number" id="income" name="income" min="0" max="10000" step="1" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                aria-describedby="income-desc" placeholder="例: 500" />
+              <p id="income-desc" class="text-sm text-gray-500 mt-1">税込年収を入力してください</p>
+            </div>
+
+            <div>
+              <label for="family_structure" class="block text-gray-700 font-medium mb-1">家族構成<span class="text-red-600" aria-hidden="true">*</span></label>
+              <select id="family_structure" name="family_structure" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                aria-describedby="family-desc">
+                <option value="" disabled selected>選択してください</option>
+                <option value="single">独身</option>
+                <option value="married_no_children">既婚（子どもなし）</option>
+                <option value="married_with_children">既婚（子どもあり）</option>
+                <option value="others">その他</option>
+              </select>
+              <p id="family-desc" class="text-sm text-gray-500 mt-1">あなたの現在の家族構成を選択してください</p>
+            </div>
+          </fieldset>
+
+          <!-- 右側: アクセシビリティ設定 -->
+          <fieldset class="space-y-4">
+            <legend class="text-lg font-semibold text-yellow-700 border-b border-yellow-300 pb-2 mb-4">アクセシビリティ設定</legend>
+
+            <div>
+              <label for="font_size" class="block text-gray-700 font-medium mb-1">フォントサイズ</label>
+              <select id="font_size" name="font_size"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                aria-describedby="font-size-desc">
+                <option value="sm">小 (14px相当)</option>
+                <option value="md" selected>標準 (16px相当)</option>
+                <option value="lg">大 (18px相当)</option>
+                <option value="xl">特大 (20px相当)</option>
+              </select>
+              <p id="font-size-desc" class="text-sm text-gray-500 mt-1">画面のテキストサイズを変更できます</p>
+            </div>
+
+            <div>
+              <label for="color_contrast" class="block text-gray-700 font-medium mb-1">色彩コントラスト設定</label>
+              <select id="color_contrast" name="color_contrast"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400"
+                aria-describedby="contrast-desc">
+                <option value="normal" selected>標準</option>
+                <option value="high">高コントラスト</option>
+              </select>
+              <p id="contrast-desc" class="text-sm text-gray-500 mt-1">文字や背景のコントラストを調整します</p>
+            </div>
+            
+            <div>
+              <label for="additional_options" class="block text-gray-700 font-medium mb-1">その他アクセシビリティオプション</label>
+              <div class="flex flex-col space-y-2 border border-gray-300 rounded-md p-3 max-h-48 overflow-y-auto" aria-describedby="additional-desc">
+                <label class="inline-flex items-center">
+                  <input type="checkbox" name="keyboard_support" id="keyboard_support" class="form-checkbox text-yellow-500 focus:outline-yellow-400" />
+                  <span class="ml-2">キーボード操作サポート</span>
+                </label>
+                <label class="inline-flex items-center">
+                  <input type="checkbox" name="screen_reader" id="screen_reader" class="form-checkbox text-yellow-500 focus:outline-yellow-400" />
+                  <span class="ml-2">スクリーンリーダー最適化</span>
+                </label>
+                <label class="inline-flex items-center">
+                  <input type="checkbox" name="reduce_motion" id="reduce_motion" class="form-checkbox text-yellow-500 focus:outline-yellow-400" />
+                  <span class="ml-2">動きの削減</span>
+                </label>
+              </div>
+              <p id="additional-desc" class="text-sm text-gray-500 mt-1">必要に応じてアクセシビリティオプションを選択してください</p>
+            </div>
+          </fieldset>
+
+          <!-- フル幅のパスワード変更とMFA設定リンク -->
+          <div class="md:col-span-2 mt-6 flex space-x-6">
+            <a href="./password_reset.html" 
+              class="text-yellow-700 font-semibold hover:underline focus:underline focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400"
+              aria-label="パスワード変更画面へ移動">パスワード変更</a>
+            <a href="./mfa_setting.html" 
+              class="text-yellow-700 font-semibold hover:underline focus:underline focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400"
+              aria-label="多要素認証設定画面へ移動">多要素認証設定</a>
+          </div>
+
+          <!-- 送信ボタン -->
+          <div class="md:col-span-2 mt-10">
+            <button type="submit"
+              class="w-full bg-yellow-500 hover:bg-yellow-600 focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400 text-white font-bold py-3 rounded-lg transition-colors duration-200"
+              aria-label="プロフィール情報を保存する">
+              プロフィールを保存
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <footer class="bg-white border-t border-gray-300 py-4 text-center text-sm text-gray-600">
+    <nav aria-label="フッターナビゲーション" class="space-x-4">
+      <a href="./terms_privacy.html#terms" class="text-orange-700 hover:underline focus:underline focus:outline-yellow-300">利用規約</a>
+      <a href="./terms_privacy.html#privacy" class="text-orange-700 hover:underline focus:underline focus:outline-yellow-300">プライバシーポリシー</a>
+      <a href="./help_faq.html" class="text-orange-700 hover:underline focus:underline focus:outline-yellow-300">ヘルプ・FAQ</a>
+    </nav>
+  </footer>
+
+  <script>
+    // 簡単なクライアント側バリデーションと送信ハンドリング（サンプル）
+    document.getElementById('profile-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const ageInput = this.age;
+      const incomeInput = this.income;
+      const familyInput = this.family_structure;
+
+      let valid = true;
+      // 年齢チェック
+      if (!ageInput.value || ageInput.value < 0 || ageInput.value > 120) {
+        valid = false;
+        ageInput.focus();
+        alert("年齢は0から120の間で入力してください。");
+        return;
+      }
+      // 年収チェック
+      if (!incomeInput.value || incomeInput.value < 0) {
+        valid = false;
+        incomeInput.focus();
+        alert("年収は正しい数値を入力してください。");
+        return;
+      }
+      // 家族構成チェック
+      if (!familyInput.value) {
+        valid = false;
+        familyInput.focus();
+        alert("家族構成を選択してください。");
+        return;
+      }
+      
+      if (valid) {
+        alert("プロフィール情報が保存されました（デモ用）。");
+        // ここで実際にはサーバーへの送信処理を実装
+      }
+    });
+  </script>
+</body>
+</html>

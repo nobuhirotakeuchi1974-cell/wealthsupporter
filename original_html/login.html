@@ -1,0 +1,184 @@
+<!-- Generated for file_path: login.html -->
+<!-- Corresponding screen_name: ログイン画面 -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ログイン - Wealth Supporter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
+  <style>
+    /* カスタムフォーカススタイル */
+    input:focus,
+    button:focus,
+    a:focus {
+      outline: 2px solid #fbbf24; /* #FFC107のダークシェードに近い黄色 */
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="bg-yellow-50 text-gray-900 font-sans min-h-screen flex flex-col">
+  <header class="py-4 text-center bg-white shadow-sm">
+    <h1 class="text-3xl font-bold text-yellow-600 select-none">Wealth Supporter</h1>
+  </header>
+
+  <main
+    role="main"
+    class="flex justify-center items-center flex-grow px-4 py-12"
+  >
+    <section
+      class="bg-white rounded-lg shadow-md p-8 max-w-md w-full"
+      aria-labelledby="form-title"
+    >
+      <h2 id="form-title" class="text-2xl font-semibold mb-6 text-gray-900">
+        ログイン
+      </h2>
+
+      <form id="login-form" action="#" method="post" novalidate>
+        <div class="mb-5">
+          <label
+            for="email"
+            class="block text-gray-700 font-semibold mb-2"
+            >メールアドレス</label
+          >
+          <input
+            type="email"
+            id="email"
+            name="email"
+            autocomplete="email"
+            required
+            placeholder="例: user@example.com"
+            class="w-full px-4 py-3 border border-gray-300 rounded-md focus:border-yellow-500 focus:ring-2 focus:ring-yellow-400 transition-colors"
+            aria-describedby="email-desc email-error"
+            aria-invalid="false"
+          />
+          <p id="email-desc" class="sr-only">
+            有効なメールアドレスを入力してください。
+          </p>
+          <p
+            id="email-error"
+            class="text-red-700 text-sm mt-1 hidden"
+            role="alert"
+            aria-live="assertive"
+          >
+            メールアドレスは必須です。
+          </p>
+        </div>
+
+        <div class="mb-5">
+          <label
+            for="password"
+            class="block text-gray-700 font-semibold mb-2"
+            >パスワード</label
+          >
+          <input
+            type="password"
+            id="password"
+            name="password"
+            autocomplete="current-password"
+            required
+            placeholder="********"
+            class="w-full px-4 py-3 border border-gray-300 rounded-md focus:border-yellow-500 focus:ring-2 focus:ring-yellow-400 transition-colors"
+            aria-describedby="password-error"
+            aria-invalid="false"
+          />
+          <p
+            id="password-error"
+            class="text-red-700 text-sm mt-1 hidden"
+            role="alert"
+            aria-live="assertive"
+          >
+            パスワードは必須です。
+          </p>
+        </div>
+
+        <!-- 多要素認証入力フォームはJavaScriptでログイン後に必要時にモーダルで表示想定 -->
+
+        <div class="mb-4">
+          <button
+            type="submit"
+            class="w-full bg-yellow-500 hover:bg-yellow-600 focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400 text-white font-bold py-3 rounded-lg transition-colors"
+            aria-label="ログイン"
+          >
+            ログイン
+          </button>
+        </div>
+      </form>
+
+      <div class="text-right">
+        <a
+          href="./password_reset_request.html"
+          class="text-orange-700 font-semibold hover:underline focus:underline focus:outline-yellow-400"
+          >パスワードをお忘れですか？</a
+        >
+      </div>
+    </section>
+  </main>
+
+  <footer
+    class="bg-white border-t border-gray-300 py-4 mt-auto text-center text-sm text-gray-600"
+  >
+    <nav
+      aria-label="フッターナビゲーション"
+      class="space-x-4 inline-flex justify-center"
+    >
+      <a
+        href="./terms_privacy.html#terms"
+        class="text-orange-700 hover:underline focus:underline focus:outline-yellow-300"
+        >利用規約</a
+      >
+      <a
+        href="./terms_privacy.html#privacy"
+        class="text-orange-700 hover:underline focus:underline focus:outline-yellow-300"
+        >プライバシーポリシー</a
+      >
+      <a
+        href="./help_faq.html"
+        class="text-orange-700 hover:underline focus:underline focus:outline-yellow-300"
+        >ヘルプ・FAQ</a
+      >
+    </nav>
+  </footer>
+
+  <script>
+    // フォーム入力の簡易バリデーション（クライアント側）
+    const form = document.getElementById('login-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const emailError = document.getElementById('email-error');
+    const passwordError = document.getElementById('password-error');
+
+    form.addEventListener('submit', (e) => {
+      let valid = true;
+
+      // メールアドレス必須チェック
+      if (!emailInput.value.trim()) {
+        emailError.classList.remove('hidden');
+        emailInput.setAttribute('aria-invalid', 'true');
+        valid = false;
+      } else {
+        emailError.classList.add('hidden');
+        emailInput.setAttribute('aria-invalid', 'false');
+      }
+
+      // パスワード必須チェック
+      if (!passwordInput.value.trim()) {
+        passwordError.classList.remove('hidden');
+        passwordInput.setAttribute('aria-invalid', 'true');
+        valid = false;
+      } else {
+        passwordError.classList.add('hidden');
+        passwordInput.setAttribute('aria-invalid', 'false');
+      }
+
+      if (!valid) {
+        e.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>

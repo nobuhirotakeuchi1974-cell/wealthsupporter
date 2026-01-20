@@ -1,0 +1,379 @@
+<!-- Generated for file_path: chat_full.html -->
+<!-- Corresponding screen_name: AIチャット対話画面 -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>AIチャット対話 - Wealth Supporter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
+  <style>
+    /* Scrollbar styling for chat log */
+    #chat-log::-webkit-scrollbar {
+      width: 8px;
+    }
+    #chat-log::-webkit-scrollbar-thumb {
+      background-color: #ffbf24;
+      border-radius: 4px;
+    }
+    #chat-log::-webkit-scrollbar-track {
+      background: #fff7d6;
+    }
+    /* Chat bubbles */
+    .chat-ai {
+      background-color: #fff9e5;
+      border: 1px solid #ffecb3;
+    }
+    .chat-user {
+      background-color: #fff3cd;
+      border: 1px solid #ffdb4d;
+    }
+    /* Focus ring for interactive elements */
+    .focus-ring:focus {
+      outline: 2px solid #fff176;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="bg-yellow-50 text-gray-900 font-sans min-h-screen flex flex-col">
+  <header
+    role="banner"
+    class="flex items-center justify-between bg-white shadow-sm px-6 h-16"
+  >
+    <h1 class="text-yellow-600 text-xl font-bold select-none">
+      Wealth Supporter
+    </h1>
+    <nav aria-label="ユーザーメニュー">
+      <ul class="flex items-center space-x-4">
+        <li>
+          <a
+            href="./user_profile.html"
+            class="text-gray-700 hover:text-yellow-700 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300 rounded focus-ring"
+            >プロフィール</a
+          >
+        </li>
+        <li>
+          <a
+            href="./settings.html"
+            class="text-gray-700 hover:text-yellow-700 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300 rounded focus-ring"
+            >設定</a
+          >
+        </li>
+        <li>
+          <a
+            href="./system_notifications.html"
+            class="text-gray-700 hover:text-yellow-700 focus:outline-yellow-300 focus:ring-2 focus:ring-yellow-300 rounded focus-ring"
+            >通知</a
+          >
+        </li>
+        <li>
+          <a
+            href="./logout_confirm.html"
+            class="text-orange-700 font-semibold hover:underline focus:underline focus:outline-yellow-300 focus-ring"
+            >ログアウト</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="flex flex-1 min-h-0">
+    <nav
+      aria-label="サイドナビゲーション"
+      class="bg-white w-64 border-r border-gray-200 p-4 hidden md:block"
+    >
+      <ul class="space-y-3 text-gray-700">
+        <li>
+          <a
+            href="./dashboard.html"
+            class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300 focus-ring"
+            >ダッシュボード</a
+          >
+        </li>
+        <li>
+          <a
+            href="./chat_full.html"
+            aria-current="page"
+            class="block px-3 py-2 rounded bg-yellow-100 text-yellow-800 font-semibold focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400"
+            >AIチャット</a
+          >
+        </li>
+        <li>
+          <a
+            href="./conversation_history.html"
+            class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300 focus-ring"
+            >会話履歴</a
+          >
+        </li>
+        <li>
+          <a
+            href="./favorite_actions.html"
+            class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300 focus-ring"
+            >お気に入りアクション</a
+          >
+        </li>
+        <li>
+          <a
+            href="./plan_history.html"
+            class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300 focus-ring"
+            >プラン履歴・バージョン管理</a
+          >
+        </li>
+        <li>
+          <a
+            href="./reminder_setting.html"
+            class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300 focus-ring"
+            >リマインダー設定</a
+          >
+        </li>
+        <li>
+          <a
+            href="./help_faq.html"
+            class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300 focus-ring"
+            >ヘルプ・FAQ</a
+          >
+        </li>
+        <li>
+          <a
+            href="./accessibility_env.html"
+            class="block px-3 py-2 rounded hover:bg-yellow-100 focus:bg-yellow-200 focus:outline-yellow-300 focus-ring"
+            >アクセシビリティ設定</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <main
+      role="main"
+      class="flex-1 flex flex-col justify-between max-w-full overflow-hidden"
+      tabindex="-1"
+    >
+      <section
+        id="content-area"
+        aria-label="AIチャット対話"
+        class="flex flex-col h-full p-6"
+      >
+        <!-- 推奨サジェストメッセージ -->
+        <div
+          aria-live="polite"
+          aria-atomic="true"
+          class="mb-4 max-w-xl bg-yellow-100 border-l-4 border-yellow-400 text-yellow-800 p-4 rounded shadow"
+        >
+          <p class="text-sm">
+            こんな質問をしてみましょう:
+            <strong>「住宅購入のベストタイミングは？」</strong>,
+            <strong>「将来の収支バランスを教えて」</strong>,
+            <strong>「教育費はどう計画すべき？」</strong>
+          </p>
+        </div>
+
+        <!-- チャットログ表示 -->
+        <div
+          id="chat-log"
+          role="log"
+          aria-live="polite"
+          aria-relevant="additions"
+          class="flex-1 overflow-y-auto p-4 space-y-4 max-w-xl bg-white rounded-lg shadow-sm border border-yellow-200"
+          tabindex="0"
+        >
+          <!-- チャットメッセージのサンプル -->
+          <div class="chat-ai rounded-lg p-3 max-w-[80%]">
+            <p>こんにちは！今日はどのようなご相談でしょうか？</p>
+          </div>
+          <div class="chat-user rounded-lg p-3 max-w-[80%] self-end text-right">
+            <p>将来の資産形成についてアドバイスが欲しいです。</p>
+          </div>
+          <div class="chat-ai rounded-lg p-3 max-w-[80%]">
+            <p>
+              承知しました。現在の年齢や収入、家族構成を教えていただけますか？
+            </p>
+          </div>
+        </div>
+
+        <!-- 入力フォーム -->
+        <form
+          id="chat-input-form"
+          class="mt-4 flex max-w-xl bg-white rounded-lg shadow-sm border border-yellow-300 overflow-hidden"
+          aria-label="メッセージ入力フォーム"
+          autocomplete="off"
+        >
+          <label for="chat-input" class="sr-only">メッセージ入力</label>
+          <input
+            id="chat-input"
+            name="chat-input"
+            type="text"
+            required
+            placeholder="メッセージを入力してください"
+            aria-describedby="chat-helper"
+            class="flex-1 p-3 focus:outline-yellow-400 focus:ring-2 focus:ring-yellow-400 border-none"
+          />
+          <button
+            type="submit"
+            class="bg-yellow-500 hover:bg-yellow-600 disabled:bg-yellow-300 focus:ring-4 focus:ring-yellow-300 text-white px-5 font-bold"
+            aria-label="メッセージ送信"
+          >
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </form>
+        <p id="chat-helper" class="sr-only">メッセージを入力して送信してください</p>
+      </section>
+    </main>
+  </div>
+
+  <footer
+    class="bg-white border-t border-gray-300 py-4 text-center text-sm text-gray-600"
+  >
+    <nav
+      aria-label="フッターナビゲーション"
+      class="space-x-4 flex justify-center"
+    >
+      <a
+        href="./terms_privacy.html#terms"
+        class="text-orange-700 hover:underline focus:underline focus:outline-yellow-300 focus-ring"
+        >利用規約</a
+      >
+      <a
+        href="./terms_privacy.html#privacy"
+        class="text-orange-700 hover:underline focus:underline focus:outline-yellow-300 focus-ring"
+        >プライバシーポリシー</a
+      >
+      <a
+        href="./help_faq.html"
+        class="text-orange-700 hover:underline focus:underline focus:outline-yellow-300 focus-ring"
+        >ヘルプ・FAQ</a
+      >
+    </nav>
+  </footer>
+
+  <script>
+    // Simple JavaScript to enable Enter to send message and scroll chat log
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("chat-input-form");
+      const input = document.getElementById("chat-input");
+      const chatLog = document.getElementById("chat-log");
+      const submitBtn = form.querySelector('button[type="submit"]');
+
+      let isSending = false;
+      let conversationId = null;
+
+      const showSystemMessage = (text) => {
+        const div = document.createElement('div');
+        div.className = 'chat-ai rounded-lg p-3 max-w-[80%]';
+        div.innerHTML = `<p>${escapeHtml(text)}</p>`;
+        chatLog.appendChild(div);
+        chatLog.scrollTop = chatLog.scrollHeight;
+      };
+
+      const ensureConversation = async () => {
+        if (conversationId) return;
+
+        const saved = window.localStorage.getItem('ws_conversation_id');
+        if (saved && /^\d+$/.test(saved)) {
+          conversationId = Number(saved);
+          return;
+        }
+
+        const res = await fetch('/api/conversations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ title: 'Chat' }),
+        });
+        if (!res.ok) {
+          if (res.status === 401) {
+            showSystemMessage('ログインが必要です。先にログインしてください。');
+            return;
+          }
+          showSystemMessage('会話の作成に失敗しました。');
+          return;
+        }
+        const data = await res.json();
+        if (data && typeof data.id === 'number') {
+          conversationId = data.id;
+          window.localStorage.setItem('ws_conversation_id', String(conversationId));
+        }
+      };
+
+      ensureConversation().catch(() => {
+        showSystemMessage('会話の初期化に失敗しました。');
+      });
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        if (isSending) return;
+        const text = input.value.trim();
+        if (!text) return;
+
+        isSending = true;
+        submitBtn.disabled = true;
+
+        // Append user's message
+        const userMessageDiv = document.createElement("div");
+        userMessageDiv.className =
+          "chat-user rounded-lg p-3 max-w-[80%] self-end text-right";
+        userMessageDiv.innerHTML = `<p>${escapeHtml(text)}</p>`;
+        chatLog.appendChild(userMessageDiv);
+
+        // Append AI placeholder
+        const aiMessageDiv = document.createElement("div");
+        aiMessageDiv.className = "chat-ai rounded-lg p-3 max-w-[80%]";
+        aiMessageDiv.innerHTML = `<p>考え中...</p>`;
+        chatLog.appendChild(aiMessageDiv);
+
+        // Scroll chat log to bottom
+        chatLog.scrollTop = chatLog.scrollHeight;
+
+        input.value = "";
+        input.focus();
+
+        try {
+          if (!conversationId) {
+            await ensureConversation();
+          }
+          if (!conversationId) {
+            aiMessageDiv.innerHTML = `<p>会話の準備中です。少し待ってから再度お試しください。</p>`;
+            return;
+          }
+
+          const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ conversation_id: conversationId, message: text }),
+          });
+
+          if (!res.ok) {
+            if (res.status === 401) {
+              aiMessageDiv.innerHTML = `<p>ログインが必要です。先にログインしてください。</p>`;
+              return;
+            }
+            aiMessageDiv.innerHTML = `<p>エラー: チャット応答の取得に失敗しました。</p>`;
+            return;
+          }
+
+          const data = await res.json();
+          const reply = data && typeof data.reply === 'string' ? data.reply : '応答を取得できませんでした。';
+          aiMessageDiv.innerHTML = `<p>${escapeHtml(reply)}</p>`;
+        } catch {
+          aiMessageDiv.innerHTML = `<p>エラー: 通信に失敗しました。時間をおいて再度お試しください。</p>`;
+        } finally {
+          chatLog.scrollTop = chatLog.scrollHeight;
+          submitBtn.disabled = false;
+          isSending = false;
+        }
+      });
+
+      // Utility: escape HTML to prevent injection
+      function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
+    });
+  </script>
+</body>
+</html>

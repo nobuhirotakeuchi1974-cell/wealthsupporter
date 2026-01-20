@@ -1,0 +1,54 @@
+# Python依存パッケージ
+# 初心者向け解説：pip install -r requirements.txt で全部インストールできます
+
+# === FastAPI関連 ===
+fastapi==0.109.0          # WebAPIフレームワーク本体
+uvicorn[standard]==0.27.0  # FastAPIを動かすサーバー
+gunicorn==21.2.0          # 本番環境用WSGIサーバー
+pydantic==2.5.3           # データバリデーション（入力チェック）
+pydantic-settings==2.1.0  # 環境変数管理
+
+# === データベース関連 ===
+# なぜ SQLAlchemy を使うのか：
+# - SQL文を直接書かなくて済む
+# - Pythonのコードでデータベース操作ができる
+sqlalchemy==2.0.25        # ORM（データベース操作）
+pymysql==1.1.0            # MySQLドライバ
+cryptography==42.0.0      # pymysql用（暗号化）
+
+# === マイグレーション関連 ===
+# なぜ Alembic を使うのか：
+# - データベースのバージョン管理ができる
+# - テーブル変更の履歴が残る
+alembic==1.13.1           # データベースマイグレーション
+
+# === 認証関連 ===
+# なぜこれらが必要なのか：
+# - パスワードを安全に保存（ハッシュ化）
+# - JWTトークンでログイン状態を管理
+python-jose[cryptography]==3.3.0  # JWT トークン生成
+passlib[bcrypt]==1.7.4    # パスワードハッシュ化
+bcrypt==4.0.1             # bcrypt実装（passlibと互換性あり）
+python-multipart==0.0.6   # フォームデータ処理
+
+# === CORS関連 ===
+# なぜ必要なのか：
+# - Next.js（localhost:3000）からのアクセスを許可
+# - セキュリティ上、許可が必要
+# FastAPIに含まれているので追加パッケージ不要
+
+# === ユーティリティ ===
+python-dotenv==1.0.0      # .envファイル読み込み
+email-validator==2.1.0    # メールアドレス検証
+
+# === AI関連 ===
+# なぜ google-generativeai を使うのか：
+# - Gemini API の公式Pythonライブラリ
+# - 無料版でも使える
+# - チャットボット機能の実装が簡単
+google-generativeai>=0.8.0  # 最新版（gemini-1.5-flash対応）
+
+# === テスト関連 ===
+pytest==7.4.4             # テストフレームワーク
+pytest-asyncio==0.23.3    # 非同期テスト
+httpx==0.26.0             # テスト用HTTPクライアント
