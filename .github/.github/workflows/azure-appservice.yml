@@ -33,5 +33,5 @@ jobs:
         with:
           app-name: tech0-gen-11-step3-2-py-73-api-ws
           slot-name: Production
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F241A63350B746898CC56A2F9E4FBB45 }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: backend
